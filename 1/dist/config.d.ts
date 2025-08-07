@@ -1,5 +1,6 @@
 export declare const environment: string | undefined;
 export declare const port: string | undefined;
+export declare const logDirectory: string | undefined;
 export declare const db: {
     name: string;
     host: string;
