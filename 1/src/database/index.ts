@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 import { db } from "../config.js";
 import logger from "../core/Logger.js";
 
-const dbURI = `mongodb://${db.user}:${encodeURIComponent(db.password)}@${db.host}:${db.port}/${db.name}`;
+const dbURI = `mongodb+srv://usman:scalebackend@cluster0.u0wqzi1.mongodb.net/scaleBackend`;
+// const dbURI = `mongodb://${db.user}:${encodeURIComponent(db.password)}@${db.host}:${db.port}/${db.name}`;
 
 const options = {
   autoIndex: true,
@@ -59,5 +60,6 @@ mongoose.plugin((schema: any) => {
 
 // Listen for SIGINT and SIGTERM signals for graceful shutdown
 ["SIGINT", "SIGTERM"].forEach((signal) => gracefulShutdown(signal));
+
 
 export default connectDB;
