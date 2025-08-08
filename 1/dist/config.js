@@ -9,6 +9,8 @@ export const db = {
     port: process.env.DB_PORT || "",
     user: process.env.DB_USER || "",
     password: process.env.DB_USER_PWD || "",
+    maxPoolSize: 100,
+    minPoolSize: 0
 };
 export const corsUrl = process.env.CORS_URL;
 //# sourceMappingURL=config.js.map

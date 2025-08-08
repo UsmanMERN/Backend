@@ -7,6 +7,8 @@ export declare const db: {
     port: string;
     user: string;
     password: string;
+    maxPoolSize: number;
+    minPoolSize: number;
 };
 export declare const corsUrl: string | undefined;
 //# sourceMappingURL=config.d.ts.map
