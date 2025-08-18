@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StuDocu PDF Downloader</title>
+</head>
+
+<body>
+    <h1>StuDocu PDF Downloader</h1>
+    <p>Enter the StuDocu document URL to download as PDF. For premium content, provide login credentials.</p>
+
+    <label>Document URL (required):</label>
+    <input type="text" id="url" placeholder="https://www.studocu.com/..."><br><br>
+
+    <label>Email (optional, for premium login):</label>
+    <input type="email" id="email"><br><br>
+
+    <label>Password (optional, for premium login):</label>
+    <input type="password" id="password"><br><br>
+
+    <label>Custom Filename (optional, without .pdf):</label>
+    <input type="text" id="filename"><br><br>
+
+    <label>Save locally on server (instead of downloading):</label>
+    <input type="checkbox" id="saveLocally"><br><br>
+
+    <label>Return file for download (uncheck if only saving locally):</label>
+    <input type="checkbox" id="returnFile" checked><br><br>
+
+    <button id="downloadBtn">Download PDF</button>
+
+    <script>
+        document.getElementById('downloadBtn').addEventListener('click', async () => {
+            const button = document.getElementById('downloadBtn');
+            button.disabled = true;
+            button.textContent = 'Downloading...';
+
+            const url = document.getElementById('url').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const filename = document.getElementById('filename').value;
+            const saveLocally = document.getElementById('saveLocally').checked;
+            const returnFile = document.getElementById('returnFile').checked;
+
+            try {
+                const response = await fetch('/api/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url, email, password, filename, saveLocally, returnFile }),
+                });
+
+                if (!response.ok) {
+                    const data = await response.json();
+                    alert(data.error);
+                    return;
+                }
+
+                if (returnFile) {
+                    const blob = await response.blob();
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = filename ? `${filename}.pdf` : 'studocu-document.pdf';
+                    link.click();
+                } else {
+                    const data = await response.json();
+                    alert(data.message);
+                }
+            } catch (e) {
+                alert('Error: ' + e.message);
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Download PDF';
+            }
+        });
+    </script>
+</body>
+
+</html>

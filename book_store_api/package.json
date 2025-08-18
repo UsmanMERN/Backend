@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "axios": "^1.11.0",
+    "cheerio": "^1.1.2",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "image-size": "^2.0.2",
+    "node-fetch": "^3.3.2",
+    "nodemon": "^3.1.10",
+    "pdfkit": "^0.17.1",
+    "puppeteer": "^24.16.2",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "sharp": "^0.34.3",
+    "tesseract.js": "^6.0.1",
+    "tsc-watch": "^7.1.1",
+    "typescript": "^5.9.2"
+  },
+  "scripts": {
+    "dev": "tsc-watch --onSuccess \"node dist/server.js\"",
+    "start": "nodemon server.js",
+    "build": "tsc"
+  }
+}
