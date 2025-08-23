@@ -1,0 +1,5 @@
+flask
+playwright
+PyPDF2
+pdfplumber
+requests

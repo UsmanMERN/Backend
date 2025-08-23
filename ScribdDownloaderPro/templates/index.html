@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scribd Downloader</title>
+</head>
+<body>
+    <h1>Scribd Downloader</h1>
+    <form id="downloadForm">
+        <label for="url">Scribd URL or ID:</label>
+        <input type="text" id="url" name="url_or_id" required><br><br>
+        <label for="compress">Compress PDF:</label>
+        <input type="checkbox" id="compress" name="compress"><br>
+        <label for="clean">Clean PDF (remove blank pages):</label>
+        <input type="checkbox" id="clean" name="clean" checked><br><br>
+        <button type="submit">Download</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        document.getElementById('downloadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            data.compress = data.compress === 'on';
+            data.clean = data.clean === 'on';
+            const response = await fetch('/api/download', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            const resultDiv = document.getElementById('result');
+            if (response.ok) {
+                resultDiv.innerHTML = `<a href="${result.download_link}">Download PDF</a>`;
+            } else {
+                resultDiv.innerHTML = `Error: ${result.error}`;
+            }
+        });
+    </script>
+</body>
+</html>
