@@ -22,6 +22,27 @@ const registerUser = async (req, res) => {
         return res.status(500).json({ success: false, message: "Failed to register user" });
     }
 };
-const loginUser = async (req, res) => { };
+const loginUser = async (req, res) => {
+    const { username, password } = req.body;
+    const isUserFound = await UserModel.findOne({ username });
+    if (!isUserFound) {
+        return res.status(400).json({ success: false, message: "Invalid username or password" });
+    }
+    if (isUserFound) {
+        const isPasswordMatched = await bcrypt.compare(password, isUserFound.password);
+        if (!isPasswordMatched) {
+            return res.status(400).json({ success: false, message: "Invalid username or password" });
+        }
+        const payload = {
+            userId: isUserFound._id,
+            role: isUserFound.role,
+            username: isUserFound.username,
+            email: isUserFound.email
+        };
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
+        return res.status(200).json({ success: true, message: "User logged in successfully", token });
+    }
+    return res.status(500).json({ success: false, message: "Failed to login user" });
+};
 export { registerUser, loginUser };
 //# sourceMappingURL=auth-controller.js.map

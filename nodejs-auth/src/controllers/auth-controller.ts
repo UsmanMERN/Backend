@@ -31,7 +31,33 @@ const registerUser = async (req: Request, res: Response) => {
         return res.status(500).json({ success: false, message: "Failed to register user" });
     }
 }
-const loginUser = async (req: Request, res: Response) => { }
+const loginUser = async (req: Request, res: Response) => {
+
+    const { username, password } = req.body;
+
+    const isUserFound = await UserModel.findOne({ username });
+
+    if (!isUserFound) {
+        return res.status(400).json({ success: false, message: "Invalid username or password" });
+    }
+
+    if (isUserFound) {
+        const isPasswordMatched = await bcrypt.compare(password, isUserFound.password);
+        if (!isPasswordMatched) {
+            return res.status(400).json({ success: false, message: "Invalid username or password" });
+        }
+        const payload = {
+            userId: isUserFound._id,
+            role: isUserFound.role,
+            username: isUserFound.username,
+            email: isUserFound.email
+        }
+        const token = jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: '1d' });
+        return res.status(200).json({ success: true, message: "User logged in successfully", token });
+    }
+    return res.status(500).json({ success: false, message: "Failed to login user" });
+
+}
 
 
 export { registerUser, loginUser };

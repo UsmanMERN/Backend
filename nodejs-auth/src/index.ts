@@ -14,8 +14,11 @@ const PORT = process.env.PORT;
 app.use(express.json());
 
 import authRoutes from "./routes/auth-route.js";
+import homeRoutes from "./routes/home-routes.js";
 
 app.use("/api/auth", authRoutes);
+app.use("/api", homeRoutes);
+
 
 app.get("/", (req, res) => {
     res.json({ success: true, message: "API is working" });
