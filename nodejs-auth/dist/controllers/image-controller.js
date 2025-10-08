@@ -1,0 +1,25 @@
+import fs from 'fs';
+import Image from "../models/images.js";
+import { uploadToCloudinary } from "../helpers/cloudianryHelper.js";
+const uplaodImage = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: "No file uploaded" });
+        }
+        const { url, publicId } = await uploadToCloudinary(req.file.path);
+        const newImage = new Image({
+            url,
+            publicId,
+            uploadedBy: req.user.userId,
+        });
+        await newImage.save();
+        fs.unlinkSync(req.file.path); // Delete the file from local storage after upload
+        return res.status(201).json({ message: "Image uploaded successfully", image: newImage });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Server Error " });
+    }
+};
+export { uplaodImage };
+//# sourceMappingURL=image-controller.js.map

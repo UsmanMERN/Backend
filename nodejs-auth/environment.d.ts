@@ -6,7 +6,8 @@ declare global {
     }
     namespace Express {
         interface Request {
-            user?: any; // Adjust the type as needed
+            user?: any;
+            file?: any;
         }
     }
 }
