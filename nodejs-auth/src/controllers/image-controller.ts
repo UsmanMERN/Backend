@@ -25,4 +25,27 @@ const uplaodImage = async (req: Request, res: Response) => {
     }
 }
 
-export { uplaodImage };
+const getAllImages = async (req: Request, res: Response) => {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
+
+    const sortBy = req.query.sortBy === 'createdAt' ? 'createdAt' : 'uploadedBy';
+    const sortOrder = req.query.sortOrder === 'asc' ? 1 : -1;
+
+    const totalmages = await Image.countDocuments();
+    const totalPages = Math.ceil(totalmages / limit);
+
+    const sortObj: any = {};
+    sortObj[sortBy] = sortOrder;
+
+    try {
+        const images = await Image.find().sort(sortObj).skip(skip).limit(limit);
+        return res.status(200).json({ success: true, data: images, totalPages, currentPage: page, totalmages });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Server Error" });
+    }
+}
+
+export { uplaodImage, getAllImages };
