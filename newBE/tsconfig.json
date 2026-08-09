@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    /* Target Environment & Modules */
+    "target": "ES2022", // Compiles down to modern, optimized JavaScript syntax
+    "module": "NodeNext", // Best practice for modern Node.js module resolution
+    "moduleResolution": "NodeNext", // Tells TypeScript to mimic how Node.js actually finds files
+    "lib": ["ES2022"], // Includes global definitions for modern JS features
+
+    /* Build Directories */
+    "rootDir": "./src", // Where your TypeScript source files live
+    "outDir": "./dist", // Where the compiled JavaScript files will be saved
+
+    /* Interoperability & Optimization */
+    "esModuleInterop": true, // Fixes compatibility issues between CommonJS and ES Modules
+    "forceConsistentCasingInFileNames": true, // Prevents build issues between Mac/Windows/Linux file systems
+    "resolveJsonModule": true, // Allows importing .json files directly into your code
+    "types": ["node"],
+    /* Strict Type-Checking */
+    "strict": true, // Enables all strict type-checking options for safer code
+    "skipLibCheck": true // Skips type-checking node_modules to speed up your build
+  },
+  "include": ["src/**/*"], // Tell TypeScript to only compile files inside 'src'
+  "exclude": ["node_modules", "dist"] // Ignore third-party packages and build output folders
+}
